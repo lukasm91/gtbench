@@ -26,8 +26,8 @@ struct stage_u {
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t) {
     const real_t weights[] = {__half(1. / 30), __half(-1. / 4),
-                                         __half(1),       __half(-1. / 3),
-                                         __half(-1. / 2), __half(1. / 20)};
+                              __half(1),       __half(-1. / 3),
+                              __half(-1. / 2), __half(1. / 20)};
 
     if (eval(u()) < 0_r) {
       eval(flux()) =
@@ -59,8 +59,8 @@ struct stage_v {
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t) {
     const real_t weights[] = {__half(1. / 30), __half(-1. / 4),
-                                         __half(1),       __half(-1. / 3),
-                                         __half(-1. / 2), __half(1. / 20)};
+                              __half(1),       __half(-1. / 3),
+                              __half(-1. / 2), __half(1. / 20)};
 
     if (eval(v()) < 0_r) {
       eval(flux()) =
@@ -138,7 +138,7 @@ struct stage_advection_w_forward1 {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t::first_level) {
-    eval(a()) = eval(-0.25_r * w() / dz());
+    eval(a()) = eval(-(0.25_r * w() / dz()));
     eval(c()) = eval(0.25_r * w(0, 0, 1) / dz());
     eval(b()) = eval(1_r / dt() - a() - c());
     eval(d()) = eval(1_r / dt() * data() -
@@ -158,7 +158,7 @@ struct stage_advection_w_forward1 {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t::modify<1, -1>) {
-    eval(a()) = eval(-0.25_r * w() / dz());
+    eval(a()) = eval(__half(-0.25) * w() / dz());
     eval(c()) = eval(0.25_r * w(0, 0, 1) / dz());
     eval(b()) = eval(1_r / dt() - a() - c());
     eval(d()) = eval(1_r / dt() * data() -
@@ -171,7 +171,7 @@ struct stage_advection_w_forward1 {
   }
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t::last_level) {
-    eval(a()) = eval(-0.25_r * w() / dz());
+    eval(a()) = eval(__half(-0.25) * w() / dz());
     eval(c()) = eval(0.25_r * w(0, 0, 1) / dz());
     eval(b()) = eval(1_r / dt() - a() - c());
     eval(d()) = eval(1_r / dt() * data() -

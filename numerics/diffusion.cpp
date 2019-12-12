@@ -29,8 +29,9 @@ struct stage_horizontal {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t) {
-    constexpr static real_t weights[] = {-1_r / 90, 5_r / 36,  -49_r / 36,
-                                         49_r / 36, -5_r / 36, 1_r / 90};
+    const real_t weights[] = {__half(-1. / 90),  __half(5. / 36),
+                              __half(-49. / 36), __half(49. / 36),
+                              __half(-5. / 36),  __half(1. / 90)};
 
     auto flx_x0 = eval((weights[0] * in(-3, 0) + weights[1] * in(-2, 0) +
                         weights[2] * in(-1, 0) + weights[3] * in(0, 0) +

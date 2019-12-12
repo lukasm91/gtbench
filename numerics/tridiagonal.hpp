@@ -153,7 +153,7 @@ struct periodic_backward2 {
     gridtools::call_proc<tridiagonal::backward, full_t::modify<0, -1>>::with(
         eval, z(), c(), d());
     eval(fact()) = eval((x() + beta() * x_top() / gamma()) /
-                        (1 + z() + beta() * z_top() / gamma()));
+                        (1_r + z() + beta() * z_top() / gamma()));
   }
 
   template <typename Evaluation>
