@@ -1,12 +1,13 @@
 #pragma once
 
 #include <gridtools/storage/storage_facility.hpp>
+#include "cuda_fp16.h"
 
 namespace gt = gridtools;
 
-using real_t = GTBENCH_FLOAT;
+using real_t = __half;
 
-constexpr real_t operator"" _r(long double value) { return real_t(value); }
+constexpr real_t operator"" _r(long double value) { return real_t(double(value)); }
 constexpr real_t operator"" _r(unsigned long long value) {
   return real_t(value);
 }

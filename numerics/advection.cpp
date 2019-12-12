@@ -25,17 +25,18 @@ struct stage_u {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t) {
-    static constexpr real_t weights[] = {1_r / 30, -1_r / 4, 1_r,
-                                         -1_r / 3, -1_r / 2, 1_r / 20};
+    const real_t weights[] = {__half(1. / 30), __half(-1. / 4),
+                                         __half(1),       __half(-1. / 3),
+                                         __half(-1. / 2), __half(1. / 20)};
 
-    if (eval(u()) < 0) {
+    if (eval(u()) < 0_r) {
       eval(flux()) =
           eval(u() *
                -(weights[0] * in(-3, 0, 0) + weights[1] * in(-2, 0, 0) +
                  weights[2] * in(-1, 0, 0) + weights[3] * in() +
                  weights[4] * in(1, 0, 0) + weights[5] * in(2, 0, 0)) /
                dx());
-    } else if (eval(u()) > 0) {
+    } else if (eval(u()) > 0_r) {
       eval(flux()) =
           eval(u() *
                (weights[5] * in(-2, 0, 0) + weights[4] * in(-1, 0, 0) +
@@ -57,17 +58,18 @@ struct stage_v {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t) {
-    static constexpr real_t weights[] = {1_r / 30, -1_r / 4, 1_r,
-                                         -1_r / 3, -1_r / 2, 1_r / 20};
+    const real_t weights[] = {__half(1. / 30), __half(-1. / 4),
+                                         __half(1),       __half(-1. / 3),
+                                         __half(-1. / 2), __half(1. / 20)};
 
-    if (eval(v()) < 0) {
+    if (eval(v()) < 0_r) {
       eval(flux()) =
           eval(v() *
                -(weights[0] * in(0, -3, 0) + weights[1] * in(0, -2, 0) +
                  weights[2] * in(0, -1, 0) + weights[3] * in() +
                  weights[4] * in(0, 1, 0) + weights[5] * in(0, 2, 0)) /
                dy());
-    } else if (eval(v()) > 0) {
+    } else if (eval(v()) > 0_r) {
       eval(flux()) =
           eval(v() *
                (weights[5] * in(0, -2, 0) + weights[4] * in(0, -1, 0) +
@@ -136,8 +138,6 @@ struct stage_advection_w_forward1 {
 
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t::first_level) {
-    const gt::int_t k_offset = eval(k_size() - 1);
-
     eval(a()) = eval(-0.25_r * w() / dz());
     eval(c()) = eval(0.25_r * w(0, 0, 1) / dz());
     eval(b()) = eval(1_r / dt() - a() - c());
@@ -171,8 +171,6 @@ struct stage_advection_w_forward1 {
   }
   template <typename Evaluation>
   GT_FUNCTION static void apply(Evaluation eval, full_t::last_level) {
-    const gt::int_t k_offset = eval(k_size() - 1);
-
     eval(a()) = eval(-0.25_r * w() / dz());
     eval(c()) = eval(0.25_r * w(0, 0, 1) / dz());
     eval(b()) = eval(1_r / dt() - a() - c());

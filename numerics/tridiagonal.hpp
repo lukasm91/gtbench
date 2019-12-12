@@ -152,7 +152,6 @@ struct periodic_backward2 {
   GT_FUNCTION static void apply(Evaluation eval, full_t::first_level) {
     gridtools::call_proc<tridiagonal::backward, full_t::modify<0, -1>>::with(
         eval, z(), c(), d());
-    const gt::int_t top_offset = eval(k_size() - 1);
     eval(fact()) = eval((x() + beta() * x_top() / gamma()) /
                         (1 + z() + beta() * z_top() / gamma()));
   }
